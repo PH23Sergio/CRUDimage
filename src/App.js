@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+// src/App.js
+import React, { useState } from 'react';
+import ImageForm from './components/ImageForm';
+import ImageList from './components/ImageList';
+import Banner from './components/Banner';
 import './App.css';
 
 function App() {
+  const [images, setImages] = useState([]);
+
+  const addImage = (url) => {
+    setImages([...images, { id: Date.now(), url }]);
+  };
+
+  const deleteImage = (id) => {
+    setImages(images.filter(image => image.id !== id));
+  };
+
+  const updateImage = (id, newUrl) => {
+    setImages(images.map(image => image.id === id ? { ...image, url: newUrl } : image));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Banner />
+      <h1>Inserte URL de img</h1>
+      <ImageForm addImage={addImage} />
+      <ImageList images={images} deleteImage={deleteImage} updateImage={updateImage} />
     </div>
   );
 }
 
 export default App;
+
+
